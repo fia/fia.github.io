@@ -147,6 +147,11 @@ class IdInput extends React.Component {
         return (
             <div>
                 <h1>条码扫码记录器 v0.1</h1>
+                <h2>使用说明：</h2>
+                <ul>
+                    <li>1.目前只能在单台电脑及单独浏览器上使用才能有存储功能</li>
+                    <li>2.推荐使用<a href="https://www.google.com/chrome/" target="_blank">Chrome浏览器</a></li>
+                </ul>
                 <input
                     className="qr-input"
                     placeholder="请点击此输入框开始扫码录入"
@@ -154,7 +159,9 @@ class IdInput extends React.Component {
                     type="text"
                     onChange={this.addQrId}
                 />
-                <button className="btn" onClick={this.exportData}>备份导出数据</button>
+                <button className="btn" onClick={this.exportData}>
+                    备份导出数据
+                </button>
                 <QrIdTable
                     qrIdList={this.state.idList}
                     delButton={this.delQrId}
