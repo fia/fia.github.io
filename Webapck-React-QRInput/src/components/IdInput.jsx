@@ -15,7 +15,7 @@ class IdInput extends React.Component {
     addQrId(e) {
         // 延时获取input,重复刷新setTimeout
         let newQrId = e.target.value;
-        
+
         this.timer && clearTimeout(this.timer);
         this.timer = setTimeout(() => {
             let items = this.state.idList;
@@ -107,17 +107,11 @@ class QrIdRow extends React.Component {
                 <td>{this.props.qrIdItemIndex}</td>
                 <td>{qrIdItem.qrId}</td>
                 <td>{dateFtt("yyyy-MM-dd hh:mm:ss", qrDate)}</td>
-                {this.props.isExist ? (
-                    <td>
-                        <button
-                            onClick={() => this.props.delButton(qrIdItem.time)}
-                        >
-                            删除
-                        </button>
-                    </td>
-                ) : (
-                    <td />
-                )}
+                <td>
+                    <button onClick={() => this.props.delButton(qrIdItem.time)}>
+                        删除
+                    </button>
+                </td>
             </tr>
         );
     }
