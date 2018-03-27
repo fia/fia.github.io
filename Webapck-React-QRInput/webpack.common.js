@@ -1,7 +1,6 @@
 const path = require("path");
 const webpack = require("webpack");
 const HtmlWebpackPlugin = require("html-webpack-plugin");
-const CleanWebpackPlugin = require("clean-webpack-plugin");
 
 module.exports = {
     entry: {
@@ -40,11 +39,9 @@ module.exports = {
         ]
     },
     plugins: [
-        new CleanWebpackPlugin(["dist"]),
         new HtmlWebpackPlugin({
-            title: "Apple"
+            title: "条码扫码记录器"
         }),
-        // new UglifyJSPlugin(),
         new webpack.NamedModulesPlugin(),
         new webpack.HotModuleReplacementPlugin()
     ]
