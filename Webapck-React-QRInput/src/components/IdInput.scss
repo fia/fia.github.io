@@ -1,19 +1,39 @@
-
-
 * {
     margin: 0;
     padding: 0;
 }
-body{padding: 10px;}
-table{
+
+body {
+    padding: 10px;
+}
+
+h1 {
+    margin-bottom: 10px;
+    font-size: 14px;
+}
+
+.qr-input {
+    width: 200px;
+    margin-right: 10px;
+    padding: 3px 5px;
+}
+
+.btn {
+    padding: 3px 5px;
+}
+
+table {
     margin-top: 10px;
     border-collapse: collapse;
-    th,td{
-        padding:3px 5px;
-        border:1px solid #333;
+    th,
+    td {
+        padding: 3px 5px;
+        border: 1px solid #333;
     }
 }
 
-.exist{
-    td{background-color: #f00;}
+.exist {
+    td {
+        background-color: #f00;
+    }
 }

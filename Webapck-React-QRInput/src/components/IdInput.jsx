@@ -1,5 +1,34 @@
 import React from "react";
 import "./IdInput.scss";
+
+/*时间格式化处理*/
+function dateFtt(fmt, date) {
+    //author: meizz
+    var o = {
+        "M+": date.getMonth() + 1, //月份
+        "d+": date.getDate(), //日
+        "h+": date.getHours(), //小时
+        "m+": date.getMinutes(), //分
+        "s+": date.getSeconds(), //秒
+        "q+": Math.floor((date.getMonth() + 3) / 3), //季度
+        S: date.getMilliseconds() //毫秒
+    };
+    if (/(y+)/.test(fmt))
+        fmt = fmt.replace(
+            RegExp.$1,
+            (date.getFullYear() + "").substr(4 - RegExp.$1.length)
+        );
+    for (var k in o)
+        if (new RegExp("(" + k + ")").test(fmt))
+            fmt = fmt.replace(
+                RegExp.$1,
+                RegExp.$1.length == 1
+                    ? o[k]
+                    : ("00" + o[k]).substr(("" + o[k]).length)
+            );
+    return fmt;
+}
+
 class IdInput extends React.Component {
     constructor(props) {
         super(props);
@@ -11,6 +40,19 @@ class IdInput extends React.Component {
         };
         this.addQrId = this.addQrId.bind(this);
         this.delQrId = this.delQrId.bind(this);
+        this.exportData = this.exportData.bind(this);
+    }
+    componentWillMount() {
+        // 载入本地存储数据
+        if (localStorage.getItem("idList")) {
+            this.setState({
+                idList: JSON.parse(localStorage.getItem("idList"))
+            });
+        }
+    }
+    componentDidUpdate() {
+        // 更新本地存储数据
+        localStorage.setItem("idList", JSON.stringify(this.state.idList));
     }
     addQrId(e) {
         // 延时获取input,重复刷新setTimeout
@@ -57,10 +99,62 @@ class IdInput extends React.Component {
             })
         });
     }
+    // 备份txt导出
+    exportData() {
+        // 代码地址https://segmentfault.com/q/1010000007355852
+        function fakeClick(obj) {
+            var ev = document.createEvent("MouseEvents");
+            ev.initMouseEvent(
+                "click",
+                true,
+                false,
+                window,
+                0,
+                0,
+                0,
+                0,
+                0,
+                false,
+                false,
+                false,
+                false,
+                0,
+                null
+            );
+            obj.dispatchEvent(ev);
+        }
+        function exportRaw(name, data) {
+            var urlObject = window.URL || window.webkitURL || window;
+            var export_blob = new Blob([data]);
+            var save_link = document.createElementNS(
+                "http://www.w3.org/1999/xhtml",
+                "a"
+            );
+            save_link.href = urlObject.createObjectURL(export_blob);
+            save_link.download = name;
+            fakeClick(save_link);
+        }
+        const now = new Date();
+        exportRaw(
+            "条码扫码记录器数据备份_" +
+                dateFtt("yyyy-MM-dd hh:mm:ss", now) +
+                ".txt",
+            JSON.stringify(this.state.idList)
+        );
+    }
     render() {
+        // 输入框
         return (
             <div>
-                <input ref="inputId" type="text" onChange={this.addQrId} />
+                <h1>条码扫码记录器 v0.1</h1>
+                <input
+                    className="qr-input"
+                    placeholder="请点击此输入框开始扫码录入"
+                    ref="inputId"
+                    type="text"
+                    onChange={this.addQrId}
+                />
+                <button className="btn" onClick={this.exportData}>备份导出数据</button>
                 <QrIdTable
                     qrIdList={this.state.idList}
                     delButton={this.delQrId}
@@ -74,34 +168,8 @@ class QrIdRow extends React.Component {
     render() {
         const qrIdItem = this.props.qrIdItem;
         const qrDate = new Date(qrIdItem.time);
-        /**************************************时间格式化处理************************************/
-        function dateFtt(fmt, date) {
-            //author: meizz
-            var o = {
-                "M+": date.getMonth() + 1, //月份
-                "d+": date.getDate(), //日
-                "h+": date.getHours(), //小时
-                "m+": date.getMinutes(), //分
-                "s+": date.getSeconds(), //秒
-                "q+": Math.floor((date.getMonth() + 3) / 3), //季度
-                S: date.getMilliseconds() //毫秒
-            };
-            if (/(y+)/.test(fmt))
-                fmt = fmt.replace(
-                    RegExp.$1,
-                    (date.getFullYear() + "").substr(4 - RegExp.$1.length)
-                );
-            for (var k in o)
-                if (new RegExp("(" + k + ")").test(fmt))
-                    fmt = fmt.replace(
-                        RegExp.$1,
-                        RegExp.$1.length == 1
-                            ? o[k]
-                            : ("00" + o[k]).substr(("" + o[k]).length)
-                    );
-            return fmt;
-        }
 
+        // 列表
         return (
             <tr className={this.props.isExist ? "exist" : ""}>
                 <td>{this.props.qrIdItemIndex}</td>
