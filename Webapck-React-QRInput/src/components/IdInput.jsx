@@ -104,41 +104,23 @@ class IdInput extends React.Component {
     }
     // 备份txt导出
     exportData() {
-        // 代码地址https://segmentfault.com/q/1010000007355852
-        function fakeClick(obj) {
-            var ev = document.createEvent("MouseEvents");
-            ev.initMouseEvent(
-                "click",
-                true,
-                false,
-                window,
-                0,
-                0,
-                0,
-                0,
-                0,
-                false,
-                false,
-                false,
-                false,
-                0,
-                null
-            );
-            obj.dispatchEvent(ev);
-        }
-        function exportRaw(name, data) {
-            var urlObject = window.URL || window.webkitURL || window;
-            var export_blob = new Blob([data]);
-            var save_link = document.createElementNS(
-                "http://www.w3.org/1999/xhtml",
-                "a"
-            );
-            save_link.href = urlObject.createObjectURL(export_blob);
-            save_link.download = name;
-            fakeClick(save_link);
+        // 代码地址http://www.zhangxinxu.com/wordpress/2017/07/js-text-string-download-as-html-json-file/
+        function funDownload(filename, content) {
+            // 创建隐藏的可下载链接
+            var eleLink = document.createElement("a");
+            eleLink.download = filename;
+            eleLink.style.display = "none";
+            // 字符内容转变成blob地址
+            var blob = new Blob([content]);
+            eleLink.href = URL.createObjectURL(blob);
+            // 触发点击
+            document.body.appendChild(eleLink);
+            eleLink.click();
+            // 然后移除
+            document.body.removeChild(eleLink);
         }
         const now = new Date();
-        exportRaw(
+        funDownload(
             "条码扫码记录器数据备份_" +
                 dateFtt("yyyy-MM-dd hh:mm:ss", now) +
                 ".txt",
@@ -152,7 +134,6 @@ class IdInput extends React.Component {
         const selectedFile = document.getElementById("files").files[0]; //获取读取的File对象
         const name = selectedFile.name; //读取选中文件的文件名
         const size = selectedFile.size; //读取选中文件的大小
-        // console.log(document.getElementById("files").files);
         // console.log("文件名:" + name + "大小：" + size);
         const reader = new FileReader(); //这里是核心！！！读取操作就是由它完成的。
         reader.readAsText(selectedFile); //读取文件的内容
@@ -160,10 +141,9 @@ class IdInput extends React.Component {
         reader.onload = function() {
             // console.log(this.result); //当读取完成之后会回调这个函数，然后此时文件的内容存储到了result中。直接操作即可。
             importData = this.result;
-            // console.log(importData);
             that.setState({
                 idList: JSON.parse(importData),
-                info:`${name} 导入成功！`
+                info: `${name} 导入成功！`
             });
         };
     }
@@ -178,11 +158,10 @@ class IdInput extends React.Component {
                 <fieldset disabled="disabled">
                     <legend>使用说明：</legend>
                     <ul>
+                        <li>- 新添加数据只在单台电脑及单独浏览器上储存</li>
                         <li>
-                            - 新添加数据只在单台电脑及单独浏览器上储存
-                        </li>
-                        <li>
-                            - 不同电脑及不同浏览器可以通过原始备份导出数据，再导入备份数据完成，然后可以继续添加数据。
+                            -
+                            不同电脑及不同浏览器可以通过原始备份导出数据，再导入备份数据完成，然后可以继续添加数据。
                         </li>
                         <li>
                             - 导入备份数据会覆盖当前电脑浏览器页面上的所有数据！
@@ -228,8 +207,8 @@ class IdInput extends React.Component {
     }
 }
 function InfoMsg({ info }) {
-    console.log(info)
-    if (info.length>0) {
+    console.log(info);
+    if (info.length > 0) {
         return <p className="info">{info}</p>;
     }
     return null;
