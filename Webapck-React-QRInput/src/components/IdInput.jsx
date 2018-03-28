@@ -36,11 +36,14 @@ class IdInput extends React.Component {
             idList: [
                 // { qrId: "sw123123", time: 1521696263428 },
                 // { qrId: "sw222222", time: 1521696263423 }
-            ]
+            ],
+            info: ""
         };
         this.addQrId = this.addQrId.bind(this);
         this.delQrId = this.delQrId.bind(this);
         this.exportData = this.exportData.bind(this);
+        this.importData = this.importData.bind(this);
+        this.importDataClick = this.importDataClick.bind(this);
     }
     componentWillMount() {
         // 载入本地存储数据
@@ -142,26 +145,80 @@ class IdInput extends React.Component {
             JSON.stringify(this.state.idList)
         );
     }
+    importData() {
+        // 代码地址https://blog.csdn.net/zdavb/article/details/50266215
+        let importData = "";
+        let that = this;
+        const selectedFile = document.getElementById("files").files[0]; //获取读取的File对象
+        const name = selectedFile.name; //读取选中文件的文件名
+        const size = selectedFile.size; //读取选中文件的大小
+        // console.log(document.getElementById("files").files);
+        // console.log("文件名:" + name + "大小：" + size);
+        const reader = new FileReader(); //这里是核心！！！读取操作就是由它完成的。
+        reader.readAsText(selectedFile); //读取文件的内容
+
+        reader.onload = function() {
+            // console.log(this.result); //当读取完成之后会回调这个函数，然后此时文件的内容存储到了result中。直接操作即可。
+            importData = this.result;
+            // console.log(importData);
+            that.setState({
+                idList: JSON.parse(importData),
+                info:`${name} 导入成功！`
+            });
+        };
+    }
+    importDataClick() {
+        document.getElementById("files").click();
+    }
     render() {
         // 输入框
         return (
             <div>
-                <h1>条码扫码记录器 v0.1</h1>
-                <h2>使用说明：</h2>
-                <ul>
-                    <li>1.目前只能在单台电脑及单独浏览器上使用才能有存储功能</li>
-                    <li>2.推荐使用<a href="https://www.google.com/chrome/" target="_blank">Chrome浏览器</a></li>
-                </ul>
-                <input
-                    className="qr-input"
-                    placeholder="请点击此输入框开始扫码录入"
-                    ref="inputId"
-                    type="text"
-                    onChange={this.addQrId}
-                />
-                <button className="btn" onClick={this.exportData}>
-                    备份导出数据
-                </button>
+                <h1>条码扫码记录器 v0.2</h1>
+                <fieldset disabled="disabled">
+                    <legend>使用说明：</legend>
+                    <ul>
+                        <li>
+                            - 新添加数据只在单台电脑及单独浏览器上储存
+                        </li>
+                        <li>
+                            - 不同电脑及不同浏览器可以通过原始备份导出数据，再导入备份数据完成，然后可以继续添加数据。
+                        </li>
+                        <li>
+                            - 导入备份数据会覆盖当前电脑浏览器页面上的所有数据！
+                        </li>
+                        <li>
+                            - 推荐使用<a
+                                href="https://www.google.com/chrome/"
+                                target="_blank"
+                            >
+                                Chrome浏览器
+                            </a>
+                        </li>
+                    </ul>
+                </fieldset>
+                <div>
+                    <input
+                        className="qr-input"
+                        placeholder="请点击此输入框开始扫码录入"
+                        ref="inputId"
+                        type="text"
+                        onChange={this.addQrId}
+                    />
+                    <button className="btn" onClick={this.exportData}>
+                        备份导出数据
+                    </button>
+                    <input
+                        type="file"
+                        id="files"
+                        style={{ display: "none" }}
+                        onChange={this.importData}
+                    />
+                    <button className="btn" onClick={this.importDataClick}>
+                        导入备份数据
+                    </button>
+                    <InfoMsg info={this.state.info} />
+                </div>
                 <QrIdTable
                     qrIdList={this.state.idList}
                     delButton={this.delQrId}
@@ -170,7 +227,13 @@ class IdInput extends React.Component {
         );
     }
 }
-
+function InfoMsg({ info }) {
+    console.log(info)
+    if (info.length>0) {
+        return <p className="info">{info}</p>;
+    }
+    return null;
+}
 class QrIdRow extends React.Component {
     render() {
         const qrIdItem = this.props.qrIdItem;
