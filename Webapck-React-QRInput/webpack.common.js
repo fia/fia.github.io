@@ -4,28 +4,15 @@ const HtmlWebpackPlugin = require("html-webpack-plugin");
 
 module.exports = {
     entry: {
+        // vendor: ["react"],
         app: "./src/index.js"
     },
     output: {
-        filename: "bundle.js",
+        // filename: "[name].[hash].js",
         path: path.resolve(__dirname, "dist")
     },
     module: {
         rules: [
-            {
-                test: /\.(css|scss)$/,
-                use: [
-                    {
-                        loader: "style-loader" // 将 JS 字符串生成为 style 节点
-                    },
-                    {
-                        loader: "css-loader" // 将 CSS 转化成 CommonJS 模块
-                    },
-                    {
-                        loader: "sass-loader" // 将 Sass 编译成 CSS
-                    }
-                ]
-            },
             {
                 test: /\.(js|jsx)$/,
                 exclude: /(node_modules|bower_components)/,
@@ -38,11 +25,36 @@ module.exports = {
             }
         ]
     },
+    optimization: {
+        runtimeChunk: {
+            name: "manifest"
+        },
+        splitChunks: {
+            cacheGroups: {
+                commons: {
+                    test: /[\\/]node_modules[\\/]/,
+                    name: "vendor",
+                    chunks: "all"
+                }
+                // styles: {
+                //     name: "styles",
+                //     test: /\.(css|scss)$/,
+                //     chunks: "all",
+                //     enforce: true
+                // }
+            }
+        }
+    },
     plugins: [
         new HtmlWebpackPlugin({
-            title: "条码扫码记录器"
-        }),
-        new webpack.NamedModulesPlugin(),
-        new webpack.HotModuleReplacementPlugin()
+            title: "条码扫码记录器v0.2"
+        })
+        // new MiniCssExtractPlugin({
+        //     // filename: "[name].[chunkhash:8].css"
+        //     chunkFilename: "[name].[contenthash:8].css"
+        // })
+        // new ExtractTextPlugin("[name].[contenthash].css", {
+        //     allChunks: true
+        // })
     ]
 };
