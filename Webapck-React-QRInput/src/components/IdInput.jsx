@@ -13,19 +13,22 @@ function dateFtt(fmt, date) {
         "q+": Math.floor((date.getMonth() + 3) / 3), //季度
         S: date.getMilliseconds() //毫秒
     };
-    if (/(y+)/.test(fmt))
+    if (/(y+)/.test(fmt)) {
         fmt = fmt.replace(
             RegExp.$1,
             (date.getFullYear() + "").substr(4 - RegExp.$1.length)
         );
-    for (var k in o)
-        if (new RegExp("(" + k + ")").test(fmt))
+    }
+    for (var k in o) {
+        if (new RegExp("(" + k + ")").test(fmt)) {
             fmt = fmt.replace(
                 RegExp.$1,
                 RegExp.$1.length == 1
                     ? o[k]
                     : ("00" + o[k]).substr(("" + o[k]).length)
             );
+        }
+    }
     return fmt;
 }
 
@@ -154,7 +157,7 @@ class IdInput extends React.Component {
         // 输入框
         return (
             <div>
-                <h1>条码扫码记录器 v0.2</h1>
+                <h1>条码扫码记录器 v0.2.3</h1>
                 <fieldset disabled="disabled">
                     <legend>使用说明：</legend>
                     <ul>
@@ -187,6 +190,7 @@ class IdInput extends React.Component {
                     <button className="btn" onClick={this.exportData}>
                         备份导出数据
                     </button>
+                    {/* 导入框隐藏 */}
                     <input
                         type="file"
                         id="files"
@@ -239,6 +243,7 @@ class QrIdTable extends React.Component {
         let exist = {};
         let existId = false;
         const rows = [];
+        // 将qrId逐个添加入exist空对象中，通过对象中是否存在qrId值来判断是否有重复
         qrIdList.forEach((qrId, index) => {
             if (exist[qrId.qrId]) {
                 existId = true;
