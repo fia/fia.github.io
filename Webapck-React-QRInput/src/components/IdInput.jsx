@@ -107,6 +107,31 @@ class IdInput extends React.Component {
     }
     // 备份txt导出
     exportData() {
+        // 通过qrId值判断是否重复
+        const that = this;
+        function arrayIsRepeat(arr, arrProp) {
+            let arrObject = {};
+            let arrTemp = [];
+            for (let i = 0; i < arr.length; i++) {
+                const element = arr[i];
+                if (!arrObject[element[arrProp]]) {
+                    arrObject[element[arrProp]] = true;
+                    arrTemp.push(element);
+                }else{
+                    return false;
+                }
+            }
+            return true;
+        }
+        if(!arrayIsRepeat(this.state.idList, "qrId")){ 
+            that.setState({ info: "请删除重复后再导出" });
+            return false;
+        }
+        // 通过ClassName判断是否重复，不利于组件解耦
+        // if (document.getElementsByClassName("exist").length > 0) {
+        //     this.setState({ info: "请删除重复后再导出" });
+        //     return false;
+        // }
         // 代码地址http://www.zhangxinxu.com/wordpress/2017/07/js-text-string-download-as-html-json-file/
         function funDownload(filename, content) {
             // 创建隐藏的可下载链接
@@ -133,7 +158,7 @@ class IdInput extends React.Component {
     importData() {
         // 代码地址https://blog.csdn.net/zdavb/article/details/50266215
         let importData = "";
-        let that = this;
+        const that = this;
         const selectedFile = document.getElementById("files").files[0]; //获取读取的File对象
         const name = selectedFile.name; //读取选中文件的文件名
         const size = selectedFile.size; //读取选中文件的大小
@@ -141,11 +166,32 @@ class IdInput extends React.Component {
         const reader = new FileReader(); //这里是核心！！！读取操作就是由它完成的。
         reader.readAsText(selectedFile); //读取文件的内容
 
+        // 通过qrId值去重
+        function arrayRemoveRepeat(arr, arrProp) {
+            let arrObject = {};
+            let arrTemp = [];
+            arr.forEach(item => {
+                if (!arrObject[item[arrProp]]) {
+                    arrObject[item[arrProp]] = true;
+                    arrTemp.push(item);
+                }
+            });
+            return arrTemp;
+        }
+
         reader.onload = function() {
             // console.log(this.result); //当读取完成之后会回调这个函数，然后此时文件的内容存储到了result中。直接操作即可。
             importData = this.result;
+            let listDate = [];
+            if (that.state.idList != "") {
+                listDate = that.state.idList;
+            }
+            listDate = [...listDate, ...JSON.parse(importData)];
+            // 此去重方法不适合对象数组
+            // listDate = [...new Set(listDate)];
+            listDate = arrayRemoveRepeat(listDate, "qrId");
             that.setState({
-                idList: JSON.parse(importData),
+                idList: listDate,
                 info: `${name} 导入成功！`
             });
         };
@@ -157,17 +203,23 @@ class IdInput extends React.Component {
         // 输入框
         return (
             <div>
-                <h1>条码扫码记录器 v0.2.3</h1>
+                <h1>条码扫码记录器 v0.2.4</h1>
+                <fieldset>
+                    <legend>功能说明：</legend>
+                    <p>选定输入框，扫码枪单条扫码录入，在本地浏览器记录录入数据，高亮重复数据，通过导出导入数据文本，实现不同浏览器数据互通</p>
+                </fieldset>
                 <fieldset disabled="disabled">
                     <legend>使用说明：</legend>
                     <ul>
                         <li>- 新添加数据只在单台电脑及单独浏览器上储存</li>
                         <li>
-                            -
-                            不同电脑及不同浏览器可以通过原始备份导出数据，再导入备份数据完成，然后可以继续添加数据。
+                            - 不同电脑及不同浏览器可以通过原始备份导出数据，再导入备份数据完成，然后可以继续添加数据。
                         </li>
                         <li>
-                            - 导入备份数据会覆盖当前电脑浏览器页面上的所有数据！
+                            - 支持导入多份数据，自动去除多份数据中重复部分。
+                        </li>
+                        <li>
+                            - 导入备份数据会合并当前电脑浏览器页面上的所有数据。
                         </li>
                         <li>
                             - 推荐使用<a
@@ -211,7 +263,7 @@ class IdInput extends React.Component {
     }
 }
 function InfoMsg({ info }) {
-    console.log(info);
+    // console.log(info);
     if (info.length > 0) {
         return <p className="info">{info}</p>;
     }
