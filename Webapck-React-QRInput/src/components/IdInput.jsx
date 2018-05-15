@@ -117,13 +117,13 @@ class IdInput extends React.Component {
                 if (!arrObject[element[arrProp]]) {
                     arrObject[element[arrProp]] = true;
                     arrTemp.push(element);
-                }else{
+                } else {
                     return false;
                 }
             }
             return true;
         }
-        if(!arrayIsRepeat(this.state.idList, "qrId")){ 
+        if (!arrayIsRepeat(this.state.idList, "qrId")) {
             that.setState({ info: "请删除重复后再导出" });
             return false;
         }
@@ -206,14 +206,17 @@ class IdInput extends React.Component {
                 <h1>条码扫码记录器 v0.2.4</h1>
                 <fieldset>
                     <legend>功能说明：</legend>
-                    <p>选定输入框，扫码枪单条扫码录入，在本地浏览器记录录入数据，高亮重复数据，通过导出导入数据文本，实现不同浏览器数据互通</p>
+                    <p>
+                        选定输入框，扫码枪单条扫码录入，在本地浏览器记录录入数据，高亮重复数据，通过导出导入数据文本，实现不同浏览器数据互通
+                    </p>
                 </fieldset>
                 <fieldset disabled="disabled">
                     <legend>使用说明：</legend>
                     <ul>
                         <li>- 新添加数据只在单台电脑及单独浏览器上储存</li>
                         <li>
-                            - 不同电脑及不同浏览器可以通过原始备份导出数据，再导入备份数据完成，然后可以继续添加数据。
+                            -
+                            不同电脑及不同浏览器可以通过原始备份导出数据，再导入备份数据完成，然后可以继续添加数据。
                         </li>
                         <li>
                             - 支持导入多份数据，自动去除多份数据中重复部分。
