@@ -5,6 +5,8 @@ const CleanWebpackPlugin = require("clean-webpack-plugin");
 const UglifyJSPlugin = require("uglifyjs-webpack-plugin");
 const MiniCssExtractPlugin = require("mini-css-extract-plugin");
 const OptimizeCssAssetsPlugin = require("optimize-css-assets-webpack-plugin");
+const WebpackMd5Hash = require('webpack-md5-hash');
+
 
 module.exports = merge(common, {
     devtool: "false",
@@ -24,6 +26,7 @@ module.exports = merge(common, {
         minimizer: [new OptimizeCssAssetsPlugin({})]
     },
     plugins: [
+        new WebpackMd5Hash(),
         new CleanWebpackPlugin(["dist"]),
         new webpack.HashedModuleIdsPlugin(),
         new UglifyJSPlugin(),

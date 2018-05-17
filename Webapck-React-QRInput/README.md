@@ -47,3 +47,4 @@
   - clean-webpack-plugin
   - webpack-merge
   - optimize-css-assets-webpack-plugin
+  - webpack-md5-hash
