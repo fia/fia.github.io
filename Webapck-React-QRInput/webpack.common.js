@@ -47,7 +47,8 @@ module.exports = {
     },
     plugins: [
         new HtmlWebpackPlugin({
-            title: "条码扫码记录器v0.2"
+            title: "条码扫码记录器v0.2",
+            template: path.join(__dirname, 'src/index.html')
         })
         // new MiniCssExtractPlugin({
         //     // filename: "[name].[chunkhash:8].css"

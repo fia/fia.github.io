@@ -26,8 +26,8 @@
 
 - React开发
 - HTML localStorage读写
-- HTML页面内容导出文件
-- HTML页面导入文件内容
+- HTML页面内容导出文件(Blob)
+- HTML页面导入文件内容(FileReader)
 - 时间格式处理
 - 发布文件缓存设置(splitChunks,hash)
 
