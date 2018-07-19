@@ -143,7 +143,7 @@ function uploadCallback(imgUrl) {
     imgLoad(uploadImgUrl);
     var imgFile = uploadImgUrl.replace(/data:image\/jpeg;base64,/, '');
     $.ajax({
-        url: 'http://api.eyekey.com/face/Check/checking',
+        url: 'https://api.eyekey.com/face/Check/checking',
         type: "POST",
         data: {
           'app_id': 'c2e0031b3b144b2a93b43841d27a9e6b',
