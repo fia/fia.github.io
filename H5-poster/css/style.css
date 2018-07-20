@@ -85,7 +85,7 @@ bottom:20px;
 }
 
 /*section1*/
-// .section{ background:#b81c27 url(../images/p1-bg.jpg) no-repeat center center; background-size:cover}
+.section{ background:#b81c27 url(../images/p1-bg.jpg) no-repeat center center; background-size:cover}
 .logo{ width:90px; height:40px; background:url(../images/logo.png) no-repeat 0 0; background-size:90px auto; left:3%; top:3%; }
 .p1-main{ width:300px; height:270px; background:url(../images/page1.png) no-repeat 0 0; background-size:100% auto; left:50%; margin-left:-150px; top:27%;}
 .p1-pic{ width:280px; height:287px; background:url(../images/p1-pic.png) no-repeat 0 0; background-size:280px auto; left:50%; margin-left:-140px; top:35%;}
