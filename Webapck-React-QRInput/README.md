@@ -1,5 +1,7 @@
 # 条码扫码记录器
 
+通过扫码枪录入数据，区别出相同数据
+
 ## 线上地址
 
 [发布于github.io上的线上项目](https://fia.github.io/Webapck-React-QRInput/dist/)
