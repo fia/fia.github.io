@@ -10,7 +10,7 @@
 			// 'loading.png'
 			'icons/uc.png',
 			'icons/vidmate.png',
-			'icons/EASYTOUCH.png',
+			'icons/easytouch.png',
 			'icons/es.png',
 			'index_tit.png',
 			'index_star.png',
