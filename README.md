@@ -20,10 +20,10 @@
 
 疯狂猜字，原版应用于手机市场客户端中，可改写适配PC端。
 
-- [DEMO](https://fia.github.io/guess-words//) & [源码](https://github.com/fia/fia.github.io/tree/master/guess-words/)
+- [DEMO](https://fia.github.io/guess-words/) & [源码](https://github.com/fia/fia.github.io/tree/master/guess-words)
 - *HTML* + *jQuery*
 
-## H5手机rem布局 [H5-poster]
+## H5手机rem布局 [H5-rem]
 
 手机端活动页面，通过 *Sass* 特性，使用函数按数值将设计稿`px`值转换为页面`rem`值，达到基本兼容大部分尺寸手机。
 
@@ -32,7 +32,7 @@
 
 ## H5手机海报 [H5-poster]
 
-手机端海报，采用 *jquery.fullPage* 翻页，通过 *CSS3* 动画效果实现页面内动画。
+手机端海报，采用 *jquery.fullPage* 翻页，通过 *CSS3* 动画效果实现页面内动画。
 
 - [DEMO](https://fia.github.io/H5-poster/) & [源码](https://github.com/fia/fia.github.io/tree/master/H5-poster)
 - *HTML* + *jQuery*
